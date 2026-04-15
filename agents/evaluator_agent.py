@@ -1,5 +1,17 @@
+from urllib import response
+
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
+import json
+
+def clean_json_response(text):
+    text = text.strip()
+
+    if text.startswith("```"):
+        text = text.replace("```json", "").replace("```", "").strip()
+
+    return text
+
 
 
 def evaluate_response(
@@ -47,7 +59,7 @@ Respondé ÚNICAMENTE con este formato JSON, sin texto adicional, sin bloques de
 
     response = llm.invoke([HumanMessage(content=prompt)])
 
-    import json
-    result = json.loads(response.content)
+    cleaned = clean_json_response(response.content)
+    result = json.loads(cleaned)
     print(f"✅ Evaluación completada — Score: {result['score']}/10")
     return result
