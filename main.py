@@ -1,6 +1,7 @@
 import json
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
+from typer import prompt
 
 from utils.chunker import document_load_and_generate_chunk
 from utils.embeddings import generate_embeddings, store_embeddings, get_all_embeddings
@@ -68,7 +69,7 @@ PREGUNTA:
 Respondé de forma clara, precisa y en español."""
 
     # Etapa 4: generación con LLM
-    llm = ChatVertexAI(model="gemini-2.0-flash")
+    llm = ChatVertexAI(model="gemini-2.5-flash-lite")
     response = llm.invoke([HumanMessage(content=prompt)])
 
     return {

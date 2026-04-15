@@ -19,7 +19,7 @@ def evaluate_response(
     Retorna:
         Dict con 'score' (0-10) y 'reason' (justificación detallada)
     """
-    llm = ChatVertexAI(model="gemini-2.0-flash")
+    llm = ChatVertexAI(model="gemini-2.5-flash-lite")
 
     chunks_text = "\n\n".join([f"Chunk {i+1}: {chunk}" for i, chunk in enumerate(chunks_related)])
 
