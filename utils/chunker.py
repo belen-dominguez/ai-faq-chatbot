@@ -1,7 +1,7 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 
-def load_and_chunk_document(filepath: str, chunk_size: int = 500, chunk_overlap: int = 100) -> list[str]:
+def document_load_and_generate_chunk(filepath: str, chunk_size: int = 500, chunk_overlap: int = 100) -> list[str]:
     """
     Carga un documento .txt y lo divide en chunks con solapamiento.
 
