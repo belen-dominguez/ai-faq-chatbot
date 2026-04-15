@@ -1,3 +1,4 @@
+import chromadb
 from langchain_google_vertexai import VertexAIEmbeddings
 
 
@@ -16,3 +17,42 @@ def generate_embeddings(chunks: list[str], model: str = "text-embedding-004") ->
     embeddings = embeddings_model.embed_documents(chunks)
     print(f"✅ Embeddings generados: {len(embeddings)} vectores de dimensión {len(embeddings[0])}")
     return embeddings
+
+
+def store_embeddings(chunks: list[str], embeddings: list[list[float]], collection_name: str = "faq_chunks") -> chromadb.Collection:
+    """
+    Guarda los chunks y sus embeddings en ChromaDB (en memoria).
+
+    Argumentos:
+        chunks: textos originales de los chunks
+        embeddings: vectores correspondientes a cada chunk
+        collection_name: nombre de la colección en ChromaDB
+
+    Retorna:
+        La colección de ChromaDB con los datos guardados
+    """
+    client = chromadb.Client()
+    collection = client.get_or_create_collection(name=collection_name)
+
+    collection.add(
+        documents=chunks,
+        embeddings=embeddings,
+        ids=[f"chunk_{i}" for i in range(len(chunks))]
+    )
+
+    print(f"✅ {len(chunks)} chunks almacenados en ChromaDB (colección: '{collection_name}')")
+    return collection
+
+
+def get_all_embeddings(collection: chromadb.Collection) -> tuple[list[str], list[list[float]]]:
+    """
+    Recupera todos los chunks y embeddings almacenados en ChromaDB.
+
+    Argumentos:
+        collection: colección de ChromaDB
+
+    Retorna:
+        Tupla de (chunks, embeddings)
+    """
+    result = collection.get(include=["documents", "embeddings"])
+    return result["documents"], result["embeddings"]
