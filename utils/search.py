@@ -1,6 +1,5 @@
 
 import numpy as np
-
 MIN_SCORE = 0.6
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
@@ -57,6 +56,7 @@ def search_similar_chunks(
 
     query_embedding = embed_query(query, embeddings_model)
 
+# 1. calculamos scores originales
     scores = [
     {
         "chunk": chunk,
@@ -64,16 +64,18 @@ def search_similar_chunks(
         "chunk_id": i
     }
     for i, (chunk, emb) in enumerate(zip(chunks, chunk_embeddings))
-]
+    ]
 
+# 2. ordenar por score
     scores.sort(key=lambda x: x["score"], reverse=True)
+
 
     filtered = [s for s in scores if s["score"] >= MIN_SCORE]
     top_chunks = filtered[:top_k]
 
     if not top_chunks:
-        print("⚠️ No se encontraron chunks relevantes")
-        return []
+        print("⚠️ No se encontraron chunks con threshold, devolviendo top_k sin filtrar")
+        top_chunks = scores[:top_k]
 
-    print(f"✅ {len(top_chunks)} chunks relevantes (score máx: {top_chunks[0]['score']:.4f})")
+    print(f"✅ {len(top_chunks)} chunks relevantes (score máx norm: {top_chunks[0]['score']:.4f})")
     return top_chunks

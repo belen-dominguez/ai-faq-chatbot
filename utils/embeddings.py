@@ -1,19 +1,19 @@
 import chromadb
+import numpy as np
 from langchain_google_vertexai import VertexAIEmbeddings
 
+embeddings_model = VertexAIEmbeddings(model='text-embedding-004')
 
-def generate_embeddings(chunks: list[str], model: str = "text-embedding-004") -> list[list[float]]:
+def generate_embeddings(chunks: list[str]) -> list[list[float]]:
     """
     Genera embeddings para cada chunk usando Vertex AI.
 
     Argumentos:
         chunks: lista de strings a embeddear
-        model: modelo de embeddings a usar
 
     Retorna:
         Lista de vectores (cada vector es una lista de floats)
     """
-    embeddings_model = VertexAIEmbeddings(model=model)
     embeddings = embeddings_model.embed_documents(chunks)
     print(f"✅ Embeddings generados: {len(embeddings)} vectores de dimensión {len(embeddings[0])}")
     return embeddings
@@ -55,4 +55,8 @@ def get_all_embeddings(collection: chromadb.Collection) -> tuple[list[str], list
         Tupla de (chunks, embeddings)
     """
     result = collection.get(include=["documents", "embeddings"])
-    return result["documents"], result["embeddings"]
+    
+    chunks = result["documents"]
+    embeddings = np.array(result["embeddings"])
+
+    return chunks, embeddings
