@@ -1,8 +1,9 @@
-from urllib import response
-
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
 import json
+
+
+llm = ChatVertexAI(model="gemini-2.5-flash-lite")
 
 def clean_json_response(text):
     text = text.strip()
@@ -31,35 +32,52 @@ def evaluate_response(
     Retorna:
         Dict con 'score' (0-10) y 'reason' (justificación detallada)
     """
-    llm = ChatVertexAI(model="gemini-2.5-flash-lite")
+    
 
     chunks_text = "\n\n".join([f"Chunk {i+1}: {chunk}" for i, chunk in enumerate(chunks_related)])
 
-    prompt = f"""Eres un evaluador experto de sistemas RAG (Retrieval Augmented Generation).
-Analizá la siguiente interacción y evaluá su calidad considerando estas tres dimensiones:
+    prompt = f"""Sos un evaluador experto de sistemas RAG.
 
-1. RELEVANCIA DE CHUNKS: ¿Los chunks recuperados se relacionan con la pregunta?
-2. CALIDAD DE LA RESPUESTA: ¿La respuesta usa información de los chunks y es precisa?
-3. COMPLETITUD: ¿La respuesta cubre totalmente la pregunta del usuario?
+Evaluá la siguiente respuesta considerando:
 
-PREGUNTA DEL USUARIO:
+1. RELEVANCIA (0-10): ¿Los chunks son útiles para la pregunta?
+2. EXACTITUD (0-10): ¿La respuesta es fiel a los chunks? (penalizá invenciones)
+3. COMPLETITUD (0-10): ¿responde completamente la pregunta?
+
+Reglas importantes:
+- Si la respuesta contiene información que NO está en los chunks → penalizar EXACTITUD
+- Si los chunks no son relevantes → penalizar RELEVANCIA
+- Si falta información clave → penalizar COMPLETITUD
+
+PREGUNTA:
 {user_question}
 
-CHUNKS RECUPERADOS:
+CHUNKS:
 {chunks_text}
 
-RESPUESTA DEL SISTEMA:
+RESPUESTA:
 {system_answer}
 
-Respondé ÚNICAMENTE con este formato JSON, sin texto adicional, sin bloques de código:
+Respondé SOLO con JSON válido (sin markdown):
+
 {{
-    "score": <entero del 0 al 10>,
-    "reason": "<justificación detallada de al menos 50 caracteres mencionando las tres dimensiones evaluadas>"
-}}"""
+  "relevance": int,
+  "accuracy": int,
+  "completeness": int,
+  "final_score": int,
+  "reason": "explicación clara"
+}}
+"""
 
     response = llm.invoke([HumanMessage(content=prompt)])
 
     cleaned = clean_json_response(response.content)
     result = json.loads(cleaned)
-    print(f"✅ Evaluación completada — Score: {result['score']}/10")
+    print(
+    f"📊 Evaluación → "
+    f"Rel: {result['relevance']} | "
+    f"Acc: {result['accuracy']} | "
+    f"Comp: {result['completeness']} | "
+    f"Final: {result['final_score']}/10"
+    )
     return result

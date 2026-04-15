@@ -1,5 +1,5 @@
 import json
-from langchain_google_vertexai import ChatVertexAI
+from langchain_google_vertexai import ChatVertexAI, VertexAIEmbeddings
 from langchain_core.messages import HumanMessage
 from typer import prompt
 
@@ -12,8 +12,10 @@ from agents.evaluator_agent import evaluate_response
 # ── Configuración ──────────────────────────────────────────────────────────────
 
 KNOWLEDGE_BASE_PATH = "knowledge_base.txt"
-TOP_K = 3
+TOP_K = 5
 
+embeddings_model = VertexAIEmbeddings(model="text-embedding-004")
+llm = ChatVertexAI(model="gemini-2.5-flash-lite")
 
 # ── Pipeline de Indexación ─────────────────────────────────────────────────────
 
@@ -38,7 +40,7 @@ def build_index(filepath: str) -> tuple:
 
 # ── Pipeline de Consulta ───────────────────────────────────────────────────────
 
-def generate_answer(user_question: str, chunks: list[str], embeddings: list[list[float]]) -> dict:
+def generate_answer(user_question: str, chunks: list[str], embeddings: list[list[float]], embeddings_model) -> dict:
     """
     Ejecuta el pipeline completo de consulta:
     1. Busca los chunks más relevantes
@@ -50,15 +52,29 @@ def generate_answer(user_question: str, chunks: list[str], embeddings: list[list
         Dict con user_question, system_answer y chunks_related
     """
     # Etapa 1 y 2: búsqueda vectorial
-    top_chunks = search_similar_chunks(user_question, chunks, embeddings, top_k=TOP_K)
+    top_chunks = search_similar_chunks(user_question, chunks, embeddings, embeddings_model, top_k=TOP_K)
+    if not top_chunks:
+        return {
+            "user_question": user_question,
+            "system_answer": "No encontré información relevante en la documentación.",
+            "chunks_related": []
+        }
+    
     chunks_related = [c["chunk"] for c in top_chunks]
 
     # Etapa 3: ensamblado de contexto
     context = "\n\n".join([f"Fragmento {i+1}:\n{chunk}" for i, chunk in enumerate(chunks_related)])
 
     prompt = f"""Eres un asistente de soporte para PeopleCore, un sistema HR SaaS.
-Respondé la pregunta del usuario basándote ÚNICAMENTE en el contexto provisto.
-Si la información no está en el contexto, indicá que no tenés esa información disponible.
+INSTRUCCIONES:
+- Respondé SOLO usando la información del CONTEXTO.
+- Si la pregunta tiene múltiples partes, verificá si el contexto cubre todas.
+- Si alguna parte NO está cubierta, indicá claramente qué información falta.
+- Si la respuesta no está en el contexto, decí: "No tengo información suficiente para responder."
+- No inventes información.
+- Si hay múltiples fragmentos, integralos en una respuesta coherente.
+- Respondé de forma clara, precisa y en español.
+
 
 CONTEXTO:
 {context}
@@ -66,10 +82,9 @@ CONTEXTO:
 PREGUNTA:
 {user_question}
 
-Respondé de forma clara, precisa y en español."""
+RESPUESTA:"""
 
     # Etapa 4: generación con LLM
-    llm = ChatVertexAI(model="gemini-2.5-flash-lite")
     response = llm.invoke([HumanMessage(content=prompt)])
 
     return {
@@ -98,7 +113,7 @@ def main():
         print(f"\n🔍 Pregunta: {question}")
 
         # 3. Generar respuesta
-        result = generate_answer(question, chunks, embeddings)
+        result = generate_answer(question, chunks, embeddings, embeddings_model)
 
         # 4. Evaluar respuesta (bonus)
         evaluation = evaluate_response(

@@ -1,7 +1,7 @@
-# utils/search.py
-import numpy as np
-from langchain_google_vertexai import VertexAIEmbeddings
 
+import numpy as np
+
+MIN_SCORE = 0.6
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """
@@ -10,21 +10,25 @@ def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """
     a = np.array(vec1)
     b = np.array(vec2)
-    return np.dot(a, b) / (np.linalg.norm(a) * np.linalg.norm(b))
+   
+    denom = (np.linalg.norm(a) * np.linalg.norm(b))
+    if denom == 0:
+        return 0.0
 
+    return np.dot(a, b) / denom
 
-def embed_query(query: str, model: str = "text-embedding-004") -> list[float]:
+#  str = "text-embedding-004"
+def embed_query(query: str, embeddings_model) -> list[float]:
     """
     Convierte la pregunta del usuario en un vector usando Vertex AI.
 
     Argumentos:
         query: pregunta del usuario
-        model: modelo de embeddings a usar
+        embeddings_model: modelo de embeddings a usar
 
     Retorna:
         Vector de la pregunta
     """
-    embeddings_model = VertexAIEmbeddings(model=model)
     return embeddings_model.embed_query(query)
 
 
@@ -32,7 +36,8 @@ def search_similar_chunks(
     query: str,
     chunks: list[str],
     chunk_embeddings: list[list[float]],
-    top_k: int = 3
+    embeddings_model, 
+    top_k: int = 5
 ) -> list[dict]:
     """
     Busca los chunks más similares a la pregunta usando k-NN con similitud coseno.
@@ -46,15 +51,29 @@ def search_similar_chunks(
     Retorna:
         Lista de dicts con texto del chunk y su score de similitud
     """
-    query_embedding = embed_query(query)
+    if len(chunks) == 0 or len(chunk_embeddings) == 0:
+        print("⚠️ No hay datos para hacer búsqueda")
+        return []
+
+    query_embedding = embed_query(query, embeddings_model)
 
     scores = [
-        {"chunk": chunk, "score": cosine_similarity(query_embedding, emb)}
-        for chunk, emb in zip(chunks, chunk_embeddings)
-    ]
+    {
+        "chunk": chunk,
+        "score": cosine_similarity(query_embedding, emb),
+        "chunk_id": i
+    }
+    for i, (chunk, emb) in enumerate(zip(chunks, chunk_embeddings))
+]
 
     scores.sort(key=lambda x: x["score"], reverse=True)
 
-    top_chunks = scores[:top_k]
-    print(f"✅ Top {top_k} chunks recuperados (score más alto: {top_chunks[0]['score']:.4f})")
+    filtered = [s for s in scores if s["score"] >= MIN_SCORE]
+    top_chunks = filtered[:top_k]
+
+    if not top_chunks:
+        print("⚠️ No se encontraron chunks relevantes")
+        return []
+
+    print(f"✅ {len(top_chunks)} chunks relevantes (score máx: {top_chunks[0]['score']:.4f})")
     return top_chunks
