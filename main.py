@@ -60,10 +60,13 @@ def generate_answer(user_question: str, chunks: list[str], embeddings: list[list
             "chunks_related": []
         }
     
-    chunks_related = [c["chunk"] for c in top_chunks]
+    chunks_related = top_chunks
 
-    # Etapa 3: ensamblado de contexto
-    context = "\n\n".join([f"Fragmento {i+1}:\n{chunk}" for i, chunk in enumerate(chunks_related)])
+     # Etapa 3: ensamblado de contexto
+    context = "\n\n".join([
+        f"Fragmento {i+1} (relevancia: {c['score']:.2f}):\n{c['chunk']}"
+        for i, c in enumerate(top_chunks)
+    ])
 
     prompt = f"""Eres un asistente de soporte para PeopleCore, un sistema HR SaaS.
 INSTRUCCIONES:

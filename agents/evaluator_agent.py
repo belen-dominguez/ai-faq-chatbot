@@ -18,7 +18,7 @@ def clean_json_response(text):
 def evaluate_response(
     user_question: str,
     system_answer: str,
-    chunks_related: list[str]
+    chunks_related: list[dict]
 ) -> dict:
     """
     Agente evaluador que analiza la calidad de la respuesta RAG.
@@ -34,7 +34,10 @@ def evaluate_response(
     """
     
 
-    chunks_text = "\n\n".join([f"Chunk {i+1}: {chunk}" for i, chunk in enumerate(chunks_related)])
+    chunks_text = "\n\n".join([
+    f"Chunk {i+1} (score: {c['score']:.2f}): {c['chunk']}"
+    for i, c in enumerate(chunks_related)
+    ])
 
     prompt = f"""Sos un evaluador experto de sistemas RAG.
 
