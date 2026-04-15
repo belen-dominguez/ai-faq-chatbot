@@ -1,0 +1,133 @@
+# PeopleCore HR SaaS - Base de Conocimiento Interna
+# Versión 3.2 | Actualizado: Enero 2025
+# Uso interno - Equipo de Soporte al Cliente
+
+=============================================================
+SECCIÓN 1: GESTIÓN DE CUENTAS Y ACCESO
+=============================================================
+
+1.1 CREACIÓN DE CUENTAS DE USUARIO
+Para crear una cuenta de usuario en PeopleCore, el administrador debe ingresar al panel de Configuración > Gestión de Usuarios > Nuevo Usuario. Se requiere nombre completo, correo corporativo, rol asignado y departamento. El sistema enviará automáticamente un correo de bienvenida con un enlace de activación válido por 48 horas. Si el enlace expira, el administrador puede reenviar la invitación desde el mismo panel.
+
+1.2 ROLES Y PERMISOS
+PeopleCore cuenta con cuatro roles principales: Empleado, Manager, Administrador de RRHH y Super Administrador. El rol Empleado puede ver su perfil, solicitar vacaciones, consultar recibos de sueldo y completar evaluaciones. El rol Manager tiene acceso adicional a los perfiles de su equipo, puede aprobar solicitudes de vacaciones y visualizar reportes de desempeño. El Administrador de RRHH gestiona todos los empleados de la organización, configura políticas y accede a reportes globales. El Super Administrador tiene acceso completo, incluyendo configuración de integraciones y gestión de facturación.
+
+1.3 RECUPERACIÓN DE CONTRASEÑA
+Si un usuario olvida su contraseña, debe hacer clic en "¿Olvidaste tu contraseña?" en la pantalla de inicio de sesión. Recibirá un correo con un enlace de restablecimiento válido por 30 minutos. Si no recibe el correo, debe verificar la carpeta de spam o contactar a su administrador para confirmar que el correo registrado es correcto. Los administradores pueden forzar un restablecimiento de contraseña desde Configuración > Gestión de Usuarios > seleccionar usuario > Restablecer Contraseña.
+
+1.4 AUTENTICACIÓN DE DOS FACTORES (2FA)
+PeopleCore soporta autenticación de dos factores mediante aplicaciones TOTP (como Google Authenticator o Authy) y SMS. Para activarla, el usuario debe ir a Mi Perfil > Seguridad > Activar 2FA y seguir el proceso guiado. Los administradores pueden hacer obligatorio el uso de 2FA para toda la organización desde Configuración > Seguridad > Política de Autenticación. Si un usuario pierde acceso a su segundo factor, debe contactar al Super Administrador para que desactive el 2FA temporalmente.
+
+1.5 INICIO DE SESIÓN ÚNICO (SSO)
+PeopleCore es compatible con los principales proveedores de identidad (IdP) que soporten el protocolo SAML 2.0, incluyendo Okta, Microsoft Azure AD y Google Workspace. La configuración de SSO debe ser realizada por el Super Administrador desde Configuración > Integraciones > SSO. Una vez activado el SSO, los usuarios deberán autenticarse exclusivamente a través del proveedor configurado.
+
+=============================================================
+SECCIÓN 2: GESTIÓN DE VACACIONES Y AUSENCIAS
+=============================================================
+
+2.1 SOLICITUD DE VACACIONES
+Los empleados pueden solicitar vacaciones desde el módulo de Tiempo y Asistencia > Solicitar Ausencia. Deben seleccionar el tipo de ausencia (vacaciones, licencia médica, licencia por maternidad/paternidad, entre otros), las fechas y pueden agregar un comentario opcional. La solicitud queda en estado "Pendiente" hasta que el manager la apruebe o rechace. El empleado recibe una notificación por correo y dentro de la plataforma con el resultado.
+
+2.2 POLÍTICA DE ACUMULACIÓN DE VACACIONES
+Por defecto, PeopleCore calcula la acumulación de vacaciones de forma mensual. La tasa de acumulación depende de la configuración definida por el equipo de RRHH de cada organización. Las opciones disponibles son: días fijos por año (ej. 15 días), acumulación proporcional mensual, o días ilimitados (política "unlimited PTO"). Los días no utilizados al cierre del año pueden configurarse para acumularse, perderse o pagarse, según la política de la empresa.
+
+2.3 APROBACIÓN Y RECHAZO DE SOLICITUDES
+Los managers reciben una notificación cuando un miembro de su equipo solicita una ausencia. Desde el panel de Manager > Solicitudes Pendientes, pueden ver el calendario del equipo para evaluar disponibilidad y aprobar o rechazar con un comentario. Si un manager no responde en 5 días hábiles, la solicitud puede ser escalada al Administrador de RRHH configurando la opción de "Escalado automático" en las políticas de ausencias.
+
+2.4 LICENCIA POR MATERNIDAD Y PATERNIDAD
+PeopleCore permite configurar licencias especiales con duraciones y condiciones específicas. Para la licencia por maternidad y paternidad, el Administrador de RRHH define la duración permitida, si es remunerada o no, y si requiere documentación adjunta (ej. certificado médico). La empleada o empleado debe adjuntar la documentación requerida al momento de solicitar la licencia desde el módulo de Ausencias.
+
+2.5 CALENDARIO DE AUSENCIAS DEL EQUIPO
+Los managers y empleados pueden visualizar el calendario de ausencias del equipo desde Tiempo y Asistencia > Calendario de Equipo. Este calendario muestra de forma visual quién estará ausente en cada fecha. Los administradores pueden exportar este calendario en formato CSV o integrarlo con Google Calendar o Outlook mediante la opción de sincronización disponible en Configuración > Integraciones > Calendarios.
+
+=============================================================
+SECCIÓN 3: NÓMINA Y RECIBOS DE SUELDO
+=============================================================
+
+3.1 PROCESAMIENTO DE NÓMINA
+El módulo de nómina de PeopleCore permite procesar pagos de forma mensual, quincenal o semanal, según la configuración de la organización. Para procesar la nómina, el Administrador de RRHH debe ir a Nómina > Nueva Liquidación, verificar los datos de empleados activos, revisar novedades (bonificaciones, descuentos, horas extra) y confirmar el procesamiento. PeopleCore genera automáticamente los cálculos de deducciones legales si se configuran las reglas impositivas de la región.
+
+3.2 RECIBOS DE SUELDO
+Una vez procesada la nómina, los recibos de sueldo quedan disponibles para cada empleado en Mi Perfil > Recibos de Sueldo. El empleado puede descargar el recibo en formato PDF. Los administradores pueden reenviar los recibos por correo desde el panel de Nómina > Historial de Liquidaciones. Los recibos se almacenan en la plataforma por un período de 5 años por defecto, configurable según las necesidades legales de cada país.
+
+3.3 CORRECCIÓN DE ERRORES EN NÓMINA
+Si se detecta un error en una nómina ya procesada, el Administrador de RRHH debe ir a Nómina > Historial de Liquidaciones > seleccionar la liquidación afectada > Generar Corrección. PeopleCore permite generar una liquidación complementaria para ajustar diferencias. No es posible modificar una nómina cerrada directamente; todas las correcciones se realizan mediante liquidaciones complementarias para mantener la trazabilidad.
+
+3.4 INTEGRACIÓN CON SISTEMAS CONTABLES
+PeopleCore se integra con los principales sistemas contables como QuickBooks, Xero y SAP mediante exportación de archivos en formato compatible o a través de API. La configuración de la integración contable debe realizarse desde Configuración > Integraciones > Contabilidad. Una vez configurada, los asientos contables correspondientes a cada liquidación de nómina se exportan automáticamente al sistema contable conectado.
+
+3.5 HORAS EXTRA Y BONIFICACIONES
+Las horas extra pueden registrarse manualmente por el manager desde el panel de su equipo o importarse desde sistemas de control horario integrados. Las bonificaciones (performance bonus, bono por resultados, etc.) se cargan desde Nómina > Novedades > Nueva Novedad, seleccionando el empleado, el tipo de novedad y el monto. Estas novedades se incorporan automáticamente al próximo ciclo de nómina o a una liquidación especial si así se requiere.
+
+=============================================================
+SECCIÓN 4: EVALUACIONES DE DESEMPEÑO
+=============================================================
+
+4.1 CREACIÓN DE CICLOS DE EVALUACIÓN
+Los ciclos de evaluación de desempeño son configurados por el Administrador de RRHH desde Desempeño > Nuevo Ciclo. Se define el nombre del ciclo, el período de evaluación, los participantes (todos los empleados, por departamento o por nivel), el tipo de evaluación (autoevaluación, evaluación por manager, 360°) y las fechas de inicio y cierre. Una vez creado el ciclo, PeopleCore notifica automáticamente a los participantes.
+
+4.2 TIPOS DE EVALUACIÓN DISPONIBLES
+PeopleCore soporta cuatro modalidades de evaluación: Autoevaluación (el empleado se evalúa a sí mismo), Evaluación descendente (el manager evalúa al empleado), Evaluación 360° (incluye evaluación del manager, pares y autoevaluación) y Evaluación por objetivos (basada en el cumplimiento de OKRs o KPIs definidos previamente). Cada organización puede combinar estas modalidades según su cultura y necesidades.
+
+4.3 CALIBRACIÓN DE EVALUACIONES
+La función de calibración permite a los managers y al equipo de RRHH revisar y ajustar las evaluaciones antes de hacerlas definitivas. Desde Desempeño > Calibración, se puede visualizar la distribución de calificaciones, comparar evaluaciones entre empleados del mismo nivel y realizar ajustes justificados. La calibración es especialmente útil para evitar sesgos y asegurar consistencia en las calificaciones entre diferentes managers.
+
+4.4 RESULTADOS Y REPORTES DE DESEMPEÑO
+Una vez cerrado el ciclo, los resultados quedan disponibles en Desempeño > Resultados. Los empleados pueden ver su propia evaluación si el administrador habilita la visibilidad de resultados. Los managers pueden ver los resultados de su equipo. El Administrador de RRHH accede a reportes globales con distribución de calificaciones, empleados destacados, áreas de mejora y comparativas entre períodos. Los reportes se pueden exportar en PDF o Excel.
+
+4.5 PLANES DE DESARROLLO INDIVIDUAL (PDI)
+A partir de los resultados de la evaluación, los managers pueden crear Planes de Desarrollo Individual para cada empleado desde Desempeño > PDI > Nuevo Plan. El PDI incluye objetivos de desarrollo, acciones concretas, recursos asignados y fechas de seguimiento. Tanto el empleado como el manager pueden comentar y actualizar el PDI a lo largo del período. El progreso del PDI es visible para el Administrador de RRHH en los reportes de desarrollo.
+
+=============================================================
+SECCIÓN 5: ONBOARDING Y OFFBOARDING
+=============================================================
+
+5.1 PROCESO DE ONBOARDING
+PeopleCore cuenta con un módulo de onboarding que permite crear flujos de tareas personalizados para los nuevos ingresos. Desde RRHH > Onboarding > Nuevo Proceso, se define la plantilla de onboarding con las tareas que deben completarse antes y durante el primer día (firma de contrato, carga de documentación, configuración de herramientas, etc.). Las tareas pueden asignarse al empleado, al manager, al equipo de IT o a RRHH.
+
+5.2 FIRMA ELECTRÓNICA DE CONTRATOS
+PeopleCore incluye integración con herramientas de firma electrónica (DocuSign y firma nativa). Los contratos y documentos legales pueden enviarse para firma directamente desde la plataforma desde RRHH > Documentos > Enviar para Firma. El sistema registra la fecha, hora e IP de la firma, generando un certificado de firma válido legalmente en la mayoría de los países de América Latina y Europa.
+
+5.3 CARGA Y GESTIÓN DE DOCUMENTACIÓN
+Los empleados pueden cargar documentos requeridos (DNI, título universitario, constancias, etc.) desde Mi Perfil > Documentos > Subir Documento. Los administradores pueden definir qué documentos son obligatorios para cada rol o departamento desde Configuración > Documentación Requerida. El sistema alertará al empleado y al equipo de RRHH si algún documento obligatorio está faltante o vencido.
+
+5.4 PROCESO DE OFFBOARDING
+Cuando un empleado deja la organización, el Administrador de RRHH debe iniciar el proceso de offboarding desde RRHH > Offboarding > Iniciar Proceso. Se genera automáticamente un checklist que incluye: revocación de accesos, entrega de equipos, liquidación final, firma de documentos de desvinculación y encuesta de salida opcional. Cada tarea del checklist puede asignarse a diferentes responsables y tiene seguimiento de estado.
+
+5.5 ENCUESTA DE SALIDA
+PeopleCore incluye una encuesta de salida configurable que se puede enviar automáticamente al iniciar el proceso de offboarding. Las preguntas son personalizables desde Configuración > Encuestas > Encuesta de Salida. Los resultados son confidenciales y solo accesibles para el Super Administrador y el Administrador de RRHH. Los reportes de encuestas de salida se encuentran en RRHH > Reportes > Encuestas de Salida.
+
+=============================================================
+SECCIÓN 6: REPORTES Y ANALÍTICA
+=============================================================
+
+6.1 REPORTES ESTÁNDAR DISPONIBLES
+PeopleCore incluye un conjunto de reportes estándar disponibles en el módulo de Analítica. Entre los principales se encuentran: Headcount por departamento, Tasa de rotación mensual y anual, Ausentismo por período, Distribución salarial, Tiempo promedio de onboarding, NPS de empleados y Cumplimiento de evaluaciones. Todos los reportes estándar se pueden filtrar por período, departamento, cargo y ubicación.
+
+6.2 REPORTES PERSONALIZADOS
+Desde Analítica > Reportes Personalizados, los Administradores de RRHH pueden construir reportes a medida seleccionando las métricas, dimensiones y filtros que necesiten. Los reportes personalizados pueden guardarse para uso futuro y programarse para enviarse por correo de forma automática (diaria, semanal o mensual) a los destinatarios definidos.
+
+6.3 EXPORTACIÓN DE DATOS
+Todos los reportes en PeopleCore pueden exportarse en formato Excel (.xlsx) o CSV. Adicionalmente, PeopleCore cuenta con una API REST documentada que permite extraer datos de forma programática para integrarlos con herramientas de Business Intelligence como Power BI, Tableau o Looker. Las credenciales de API se generan desde Configuración > API > Nueva Clave de API.
+
+6.4 DASHBOARD EJECUTIVO
+El Dashboard Ejecutivo está disponible para el rol de Super Administrador y Administrador de RRHH. Muestra en tiempo real los indicadores clave de RRHH: headcount total, altas y bajas del mes, tasa de ausentismo, estado de los ciclos de evaluación activos y alertas de cumplimiento. El dashboard es personalizable: cada usuario puede seleccionar los widgets que desea visualizar y el orden en que aparecen.
+
+=============================================================
+SECCIÓN 7: SOPORTE Y PLANES
+=============================================================
+
+7.1 PLANES DE SUSCRIPCIÓN
+PeopleCore ofrece tres planes: Starter, Professional y Enterprise. El plan Starter incluye gestión de empleados, ausencias y recibos de sueldo para hasta 50 empleados. El plan Professional agrega los módulos de desempeño, onboarding/offboarding, reportes estándar y soporte por chat. El plan Enterprise incluye todas las funcionalidades, reportes personalizados, integraciones avanzadas, SSO, API completa y soporte dedicado con SLA garantizado.
+
+7.2 CANALES DE SOPORTE
+El soporte técnico de PeopleCore está disponible a través de tres canales: Chat en vivo (disponible en planes Professional y Enterprise, de lunes a viernes de 9 a 18 hs UTC-3), Correo electrónico (support@peoplecore.io, respuesta en hasta 24 horas hábiles para todos los planes) y Teléfono (exclusivo para clientes Enterprise, con línea directa al equipo de soporte dedicado). Todos los planes tienen acceso al Centro de Ayuda con documentación y tutoriales en video.
+
+7.3 TIEMPO DE RESPUESTA Y SLA
+Para el plan Starter, el tiempo de respuesta garantizado es de 24 horas hábiles para incidencias críticas y 48 horas para consultas generales. Para el plan Professional, el SLA es de 8 horas hábiles para incidencias críticas. Para el plan Enterprise, el SLA de incidencias críticas es de 2 horas, con soporte los 7 días de la semana. Las incidencias se clasifican como críticas cuando afectan el procesamiento de nómina o el acceso de toda la organización.
+
+7.4 ACTUALIZACIONES Y MANTENIMIENTO
+PeopleCore publica actualizaciones de producto de forma continua. Las actualizaciones menores (mejoras y corrección de bugs) se despliegan automáticamente sin interrupción del servicio. Las actualizaciones mayores que requieren mantenimiento planificado se notifican con al menos 72 horas de anticipación por correo y mediante un banner en la plataforma. El historial de actualizaciones está disponible en el Centro de Ayuda > Novedades.
+
+7.5 POLÍTICA DE PRIVACIDAD Y DATOS
+PeopleCore cumple con las regulaciones de protección de datos aplicables, incluyendo GDPR (Europa) y LGPD (Brasil). Los datos de los clientes se almacenan en servidores seguros con cifrado en tránsito (TLS 1.2+) y en reposo (AES-256). Los clientes pueden solicitar la exportación completa de sus datos o la eliminación de los mismos contactando a privacidad@peoplecore.io. PeopleCore no comparte datos de clientes con terceros sin consentimiento explícito.
