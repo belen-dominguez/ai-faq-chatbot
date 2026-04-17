@@ -32,6 +32,15 @@ Este sistema utiliza la arquitectura **RAG (Retrieval-Augmented Generation)**:
 
 👉 Ventaja: permite usar conocimiento actualizado sin necesidad de reentrenar el modelo.
 
+El sistema sigue la arquitectura RAG:
+
+1. Se divide un documento en chunks
+2. Se generan embeddings para cada fragmento
+3. Ante una pregunta:
+   - Se convierte en embedding
+   - Se buscan los chunks más similares (cosine similarity)
+   - Se genera una respuesta con un LLM usando ese contexto
+
 ---
 
 ## ⚙️ Tecnologías utilizadas
@@ -50,73 +59,63 @@ Este sistema utiliza la arquitectura **RAG (Retrieval-Augmented Generation)**:
 project/
 │
 ├── data/
-│   └── knowledge_base.txt
+│   └── knowledge_base.txt        # Documento fuente con FAQs
 │
-│── main.py
-│── pipeline.py
+├── outputs/
+│   └── sample_queries.json      # Ejemplos de consultas y respuestas
 │
-│── utils/
-│  ├── chunker.py
-│  ├── embeddings.py
-│  └── search.py
+├── src/
+│   ├── main.py                  # Punto de entrada del sistema
+│   ├── pipeline.py              # Orquestación del pipeline RAG
 │
-│── agents/
-│   └── evaluator_agent.py
+│   ├── utils/
+│   │   ├── chunker.py           # División del texto en chunks
+│   │   ├── embeddings.py        # Generación y almacenamiento de embeddings
+│   │   └── search.py            # Búsqueda vectorial (cosine similarity)
 │
+│   ├── agents/
+│   │   └── evaluator_agent.py   # Evaluador de respuestas (bonus)
 │
-├── README.md
-└── .env.example
+│   └── prompts/
+│       └── templates.py         # Templates de prompts para el LLM
+│
+├── .env
+├── .env.example
+├── config.yaml
+├── pyproject.toml
+├── uv.lock
+├── .gitignore
+└── README.md
 ```
 
 ---
 
 ## 🔄 Pipeline de Indexación
 
-El pipeline de indexación realiza:
-
-1. **Carga del documento**
-2. **Chunking**
-   - Método: `RecursiveCharacterTextSplitter`
-   - Tamaño: 500 caracteres
-   - Overlap: 100 caracteres
-
-3. **Generación de embeddings**
-4. **Almacenamiento en ChromaDB**
-
-👉 Esto genera una base de conocimiento consultable.
+- Carga del documento
+- Chunking (RecursiveCharacterTextSplitter)
+- Generación de embeddings
+- Almacenamiento en ChromaDB
 
 ---
 
 ## 🔍 Pipeline de Consulta
 
-El pipeline de consulta realiza:
-
-1. **Embedding de la pregunta**
-2. **Búsqueda vectorial (k-NN)**
-   - Métrica: similitud coseno
-   - Se seleccionan los top_k chunks más relevantes
-
-3. **Construcción del contexto**
-4. **Generación de respuesta con LLM**
-5. **Salida en formato JSON**
+- Embedding de la pregunta
+- Búsqueda vectorial (k-NN + cosine similarity)
+- Selección de top_k chunks
+- Generación de respuesta con LLM
 
 ---
 
-## 📥 Formato de salida
+## 📥 Output
 
-```json
+````json
 {
-  "user_question": "¿Cómo recupero mi contraseña?",
-  "system_answer": "Para recuperar tu contraseña...",
-  "chunks_related": [
-    {
-      "chunk": "...",
-      "score": 0.82,
-      "chunk_id": 3
-    }
-  ]
+  "user_question": "...",
+  "system_answer": "...",
+  "chunks_related": [...]
 }
-```
 
 ---
 
@@ -138,7 +137,7 @@ Output:
   "final_score": 8,
   "reason": "La respuesta es correcta pero podría ser más completa..."
 }
-```
+````
 
 ---
 
@@ -160,8 +159,10 @@ venv\Scripts\activate     # Windows
 
 ### 3. Instalar dependencias
 
+El proyecto utiliza `pyproject.toml` y `uv.lock` para la gestión de dependencias.
+
 ```bash
-pip install -r requirements.txt
+uv sync
 ```
 
 ---
@@ -185,3 +186,9 @@ El sistema:
 - construye el índice
 - ejecuta preguntas de prueba
 - muestra respuestas en consola
+
+## 💡 Decisiones técnicas
+
+- Chunking con overlap para no perder contexto
+- Cosine similarity por simplicidad y eficiencia
+- RAG para evitar alucinaciones y usar conocimiento interno

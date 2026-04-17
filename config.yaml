@@ -1,0 +1,10 @@
+models:
+  embedding_model: text-embedding-004
+  llm_model: gemini-2.5-flash-lite
+
+retrieval:
+  top_k: 5
+  min_score: 0.6
+
+paths:
+  knowledge_base: data/knowledge_base.txt

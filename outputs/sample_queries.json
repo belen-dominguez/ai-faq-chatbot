@@ -1,0 +1,24 @@
+[
+  {
+    "user_question": "¿Cómo recupero mi contraseña?",
+    "system_answer": "Para recuperar tu contraseña, debes...",
+    "chunks_related": [
+      {
+        "chunk": "Texto del chunk...",
+        "score": 0.82,
+        "chunk_id": 1
+      }
+    ]
+  },
+  {
+    "user_question": "¿Qué roles existen?",
+    "system_answer": "Los roles disponibles son...",
+    "chunks_related": [
+      {
+        "chunk": "Texto del chunk...",
+        "score": 0.78,
+        "chunk_id": 4
+      }
+    ]
+  }
+]
