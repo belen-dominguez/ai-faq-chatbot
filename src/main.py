@@ -6,7 +6,7 @@ import json
 config = load_config()
 
 TOP_K = config["retrieval"]["top_k"]
-KNOWLEDGE_BASE_PATH = config["path"]["knowledge_base"]
+KNOWLEDGE_BASE_PATH = config["paths"]["knowledge_base"] 
 EMBEDDING_MODEL = config["models"]["embedding_model"]
 LLM_MODEL = config["models"]["llm_model"]
 
