@@ -113,13 +113,14 @@ project/
 
 ## 📥 Output
 
-````json
+```json
 {
   "user_question": "...",
   "system_answer": "...",
   "chunks_related": [...],
   "evaluation": {...}
 }
+```
 
 ---
 
@@ -141,7 +142,7 @@ Output:
   "final_score": 8,
   "reason": "La respuesta es correcta pero podría ser más completa..."
 }
-````
+```
 
 ---
 
