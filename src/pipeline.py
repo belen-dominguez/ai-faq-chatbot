@@ -1,8 +1,8 @@
-from src.prompts.templates import RETRIEVER_PROMPT
-from src.utils.chunker import document_load_and_generate_chunk
-from src.utils.embeddings import generate_embeddings, store_embeddings, get_all_embeddings
-from src.utils.search import search_similar_chunks
-from src.agents.evaluator_agent import evaluate_response
+from prompts.templates import RETRIEVER_PROMPT
+from utils.chunker import document_load_and_generate_chunk
+from utils.embeddings import generate_embeddings, store_embeddings, get_all_embeddings
+from utils.search import search_similar_chunks
+from agents.evaluator_agent import evaluate_response
 from langchain_core.messages import HumanMessage
 
 

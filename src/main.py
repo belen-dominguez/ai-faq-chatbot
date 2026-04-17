@@ -1,5 +1,5 @@
 from langchain_google_vertexai import ChatVertexAI, VertexAIEmbeddings
-from src.pipeline import IndexPipeline, RAGPipeline
+from pipeline import IndexPipeline, RAGPipeline
 import json
 
 

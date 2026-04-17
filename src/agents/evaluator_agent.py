@@ -2,7 +2,7 @@ from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
 import json
 
-from src.prompts.templates import EVALUATOR_PROMPT
+from prompts.templates import EVALUATOR_PROMPT
 
 
 llm = ChatVertexAI(model="gemini-2.5-flash-lite")
