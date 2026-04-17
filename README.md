@@ -154,15 +154,7 @@ Output:
 git clone https://github.com/belen-dominguez/ai-faq-chatbot.git
 ```
 
-### 2. Crear entorno virtual
-
-```bash
-python -m venv venv
-source venv/bin/activate  # Mac/Linux
-venv\Scripts\activate     # Windows
-```
-
-### 3. Instalar dependencias
+### 2. Instalar dependencias
 
 El proyecto utiliza `pyproject.toml` y `uv.lock` para la gestión de dependencias.
 
@@ -183,7 +175,7 @@ Crear archivo `.env` basado en `.env.example`:
 Ejecutar el pipeline completo:
 
 ```bash
-python main.py
+uv run python src/main.py
 ```
 
 El sistema:
