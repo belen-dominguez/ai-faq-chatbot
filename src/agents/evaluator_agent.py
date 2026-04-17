@@ -2,6 +2,8 @@ from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
 import json
 
+from src.prompts.templates import EVALUATOR_PROMPT
+
 
 llm = ChatVertexAI(model="gemini-2.5-flash-lite")
 
@@ -39,38 +41,7 @@ def evaluate_response(
     for i, c in enumerate(chunks_related)
     ])
 
-    prompt = f"""Sos un evaluador experto de sistemas RAG.
-
-Evaluá la siguiente respuesta considerando:
-
-1. RELEVANCIA (0-10): ¿Los chunks son útiles para la pregunta?
-2. EXACTITUD (0-10): ¿La respuesta es fiel a los chunks? (penalizá invenciones)
-3. COMPLETITUD (0-10): ¿responde completamente la pregunta?
-
-Reglas importantes:
-- Si la respuesta contiene información que NO está en los chunks → penalizar EXACTITUD
-- Si los chunks no son relevantes → penalizar RELEVANCIA
-- Si falta información clave → penalizar COMPLETITUD
-
-PREGUNTA:
-{user_question}
-
-CHUNKS:
-{chunks_text}
-
-RESPUESTA:
-{system_answer}
-
-Respondé SOLO con JSON válido (sin markdown):
-
-{{
-  "relevance": int,
-  "accuracy": int,
-  "completeness": int,
-  "final_score": int,
-  "reason": "explicación clara"
-}}
-"""
+    prompt = EVALUATOR_PROMPT
 
     response = llm.invoke([HumanMessage(content=prompt)])
 
