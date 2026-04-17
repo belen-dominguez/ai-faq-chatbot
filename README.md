@@ -79,6 +79,9 @@ project/
 │   └── prompts/
 │       └── templates.py         # Templates de prompts para el LLM
 │
+│   └── shared/
+│       └── config_loader.py    # Carga configuracion del proyecto
+│
 ├── .env
 ├── .env.example
 ├── config.yaml

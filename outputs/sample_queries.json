@@ -8,7 +8,14 @@
         "score": 0.82,
         "chunk_id": 1
       }
-    ]
+    ],
+    "evaluation": {
+      "relevance": 8,
+      "accuracy": 7,
+      "completeness": 7,
+      "final_score": 7,
+      "reason": "La respuesta es mayormente relevante..."
+    }
   },
   {
     "user_question": "¿Qué roles existen?",
@@ -19,6 +26,31 @@
         "score": 0.78,
         "chunk_id": 4
       }
-    ]
+    ],
+    "evaluation": {
+      "relevance": 10,
+      "accuracy": 9,
+      "completeness": 9,
+      "final_score": 9,
+      "reason": "La respuesta es muy relevante..."
+    }
+  },
+  {
+    "user_question": "¿Cómo se procesa la nómina y qué pasa si hay un error?",
+    "system_answer": "No tengo información suficiente para responder.",
+    "chunks_related": [
+      {
+        "chunk": "3.3 CORRECCIÓN DE ERRORES EN NÓMINA\nSi...",
+        "score": 0.63,
+        "chunk_id": 21
+      }
+    ],
+    "evaluation": {
+      "relevance": 7,
+      "accuracy": 8,
+      "completeness": 6,
+      "final_score": 7,
+      "reason": "Los chunks son parcialmente ..."
+    }
   }
 ]

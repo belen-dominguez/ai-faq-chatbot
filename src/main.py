@@ -1,13 +1,17 @@
 from langchain_google_vertexai import ChatVertexAI, VertexAIEmbeddings
 from pipeline import IndexPipeline, RAGPipeline
+from shared.config_loader import load_config
 import json
 
+config = load_config()
 
+TOP_K = config["retrieval"]["top_k"]
+KNOWLEDGE_BASE_PATH = config["path"]["knowledge_base"]
+EMBEDDING_MODEL = config["models"]["embedding_model"]
+LLM_MODEL = config["models"]["llm_model"]
 
-KNOWLEDGE_BASE_PATH = "data/knowledge_base.txt"
-
-embeddings_model = VertexAIEmbeddings(model="text-embedding-004")
-llm = ChatVertexAI(model="gemini-2.5-flash-lite")
+embeddings_model = VertexAIEmbeddings(model=EMBEDDING_MODEL)
+llm = ChatVertexAI(model=LLM_MODEL)
 
 
 def main():

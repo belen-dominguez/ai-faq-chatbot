@@ -1,8 +1,12 @@
 import chromadb
 import numpy as np
 from langchain_google_vertexai import VertexAIEmbeddings
+from shared.config_loader import load_config
 
-embeddings_model = VertexAIEmbeddings(model='text-embedding-004')
+config = load_config()
+EMBEDDING_MODEL = config["models"]["embedding_model"]
+
+embeddings_model = VertexAIEmbeddings(model=EMBEDDING_MODEL)
 
 def generate_embeddings(chunks: list[str]) -> list[list[float]]:
     """

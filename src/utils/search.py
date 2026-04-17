@@ -1,6 +1,10 @@
 
 import numpy as np
-MIN_SCORE = 0.6
+from shared.config_loader import load_config
+
+config = load_config()
+
+MIN_SCORE = config["retrieval"]["min_score"]
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
     """

@@ -1,11 +1,13 @@
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.messages import HumanMessage
+from shared.config_loader import load_config
+from prompts.templates import EVALUATOR_PROMPT
 import json
 
-from prompts.templates import EVALUATOR_PROMPT
+config = load_config()
+LLM_MODEL = config["models"]["llm_model"]
 
-
-llm = ChatVertexAI(model="gemini-2.5-flash-lite")
+llm = ChatVertexAI(model=LLM_MODEL)
 
 def clean_json_response(text):
     text = text.strip()
